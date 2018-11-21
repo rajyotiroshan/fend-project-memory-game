@@ -63,26 +63,76 @@ function deckClickListener(event) {
 		//add card to open card list
 		addToOpenCardList(clickedCard);
 		//check for match with previous open card.
-		if(openCards.length %2 == 0) return;// will be matched with next card.
-		checkForMatch();
+		if(openCards.length %2 != 0) return;// will be matched with next card.
+		if(checkForMatch()){
+			matchedEffect();
+			if(openCards.length ==16) {//all cards matched.
+				gameOver();
+			}
+		}			
+		else {//cards did not match.
+			unmatchedEffect();//show unmatched style.
+			//removeUnmatchedCardFromOpenList();
+		}
 
 	}
 }
 
 //revela the symbol for clicked card.
 function revealCard(card){
-
+	card.classList.add("show");
 }
 
 //add to clicked List
 function addToOpenCardList(card) {
+	openCards.push(card);
 
 }
 
-//check if card match with previous open Card.
+//check if last two card matches in openCards list.
 
 function checkForMatch() {
+	let firstCardSymbol = openCards[openCards.length-2].children[0].classList[1];
+	let secondCardSymbol = openCards[openCards.length-1].children[0].classList[1];
+	console.log(firstCardSymbol);
+	console.log(secondCardSymbol);
+	if(firstCardSymbol == secondCardSymbol) {
+		return true;
+	}
+	return false;
+}
 
+//add matching style.
+
+function matchedEffect() {
+	openCards[openCards.length-2].classList.add("open");
+	openCards[openCards.length-1].classList.add("open");
+}
+
+//add unmatching style 
+
+function unmatchedEffect() {
+	console.log(openCards);
+	setTimeout(function(){
+		console.log(openCards);
+		openCards[openCards.length-2].classList.toggle("show");
+		openCards[openCards.length-1].classList.toggle("show");
+		removeUnmatchedCardFromOpenList();
+	},500);
+	
+}
+
+function removeUnmatchedCardFromOpenList(){
+	openCards.pop();
+	openCards.pop();
+	console.log(openCards.length);
+}
+
+//on successfully completion
+function gameOver() {
+	setTimeout(function(){
+		alert("You did it");
+	},100);
 }
  /*
  	testing
