@@ -1,15 +1,28 @@
 /*
  * Create a list that holds all of your cards
  */
-
-
+let cardSymbols=[] ;
+let deck = document.querySelector(".deck");
+//access all symbols and push it to cardSymbols array.
+document.querySelectorAll(".deck .card i").forEach(function(cardSymbol){
+	cardSymbols.push(cardSymbol.classList[1]);
+});
+//console.log(cardSymbols);
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
+function displayCards() {
+	let inner = '';
+	cardSymbols.forEach(function(symbol){
+		inner += `<li class="card">
+                <i class="fa ${symbol}"></i>
+            </li>`; 
+	});
+	deck.innerHTML = inner;
+}
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -36,3 +49,8 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+ cardSymbols = shuffle(cardSymbols);
+displayCards(cardList);
+let arr = [1,2,3,4];
+console.log(arr);
+console.log(shuffle(arr));
