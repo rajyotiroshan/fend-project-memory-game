@@ -1,7 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-let cardSymbols=[] ;
+let cardSymbols=[];
+let openCards = [];
 let deck = document.querySelector(".deck");
 //access all symbols and push it to cardSymbols array.
 document.querySelectorAll(".deck .card i").forEach(function(cardSymbol){
@@ -49,8 +50,48 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+function setsUpEventListener() {
+	deck.addEventListener("click" , deckClickListener);
+}
+
+function deckClickListener(event) {
+	let clickedCard = event.target;
+	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I") {
+		//console.log(event.target);
+		//show card symbol.
+		revealCard(clickedCard);
+		//add card to open card list
+		addToOpenCardList(clickedCard);
+		//check for match with previous open card.
+		if(openCards.length %2 == 0) return;// will be matched with next card.
+		checkForMatch();
+
+	}
+}
+
+//revela the symbol for clicked card.
+function revealCard(card){
+
+}
+
+//add to clicked List
+function addToOpenCardList(card) {
+
+}
+
+//check if card match with previous open Card.
+
+function checkForMatch() {
+
+}
+ /*
+ 	testing
+ */
+//for displaying.
  cardSymbols = shuffle(cardSymbols);
-displayCards(cardList);
+displayCards();
 let arr = [1,2,3,4];
 console.log(arr);
 console.log(shuffle(arr));
+//for clck listener
+setsUpEventListener();
