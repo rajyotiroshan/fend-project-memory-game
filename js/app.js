@@ -1,9 +1,9 @@
 /*
  * Create a list that holds all of your cards
  */
-let cardSymbols=[];
-let openCards = [];
+let cardSymbols=[],openCards = [], movesEl,moveCount = 0;
 let deck = document.querySelector(".deck");
+movesEl = document.querySelector(".moves");
 //access all symbols and push it to cardSymbols array.
 document.querySelectorAll(".deck .card i").forEach(function(cardSymbol){
 	cardSymbols.push(cardSymbol.classList[1]);
@@ -64,19 +64,10 @@ function deckClickListener(event) {
 		addToOpenCardList(clickedCard);
 		//check for match with previous open card.
 		if(openCards.length %2 != 0) return;// will be matched with next card.
-		if(checkForMatch()){
-			matchedEffect();
-			if(openCards.length ==16) {//all cards matched.
-				gameOver();
-			}
-		}			
-		else {//cards did not match.
-			unmatchedEffect();//show unmatched style.
-			//removeUnmatchedCardFromOpenList();
-		}
-
+		checkForMatch();
 	}
 }
+			
 
 //revela the symbol for clicked card.
 function revealCard(card){
@@ -94,42 +85,71 @@ function addToOpenCardList(card) {
 function checkForMatch() {
 	let firstCardSymbol = openCards[openCards.length-2].children[0].classList[1];
 	let secondCardSymbol = openCards[openCards.length-1].children[0].classList[1];
-	console.log(firstCardSymbol);
-	console.log(secondCardSymbol);
-	if(firstCardSymbol == secondCardSymbol) {
-		return true;
+	//console.log(firstCardSymbol);
+	//console.log(secondCardSymbol);
+	increamentMoves();
+	showMoves();
+	if(firstCardSymbol == secondCardSymbol) {//card matched
+		matchedEffect();
 	}
-	return false;
+	else{
+		unmatchedEffect();
+	}
 }
 
 //add matching style.
 
 function matchedEffect() {
+	matchedStyle();//add matched style to card
+	if(isGameOver()){//game is over
+		showScoreCard();
+	}
+}
+
+function matchedStyle() {
 	openCards[openCards.length-2].classList.add("open");
 	openCards[openCards.length-1].classList.add("open");
 }
 
 //add unmatching style 
-
 function unmatchedEffect() {
-	console.log(openCards);
 	setTimeout(function(){
-		console.log(openCards);
-		openCards[openCards.length-2].classList.toggle("show");
-		openCards[openCards.length-1].classList.toggle("show");
+		unmatchedStyle();	
 		removeUnmatchedCardFromOpenList();
 	},500);
 	
 }
 
+//unmatched style
+function unmatchedStyle() {
+	openCards[openCards.length-2].classList.remove("show");
+	openCards[openCards.length-1].classList.remove("show");
+}
+//poped out unmatched card.
 function removeUnmatchedCardFromOpenList(){
 	openCards.pop();
 	openCards.pop();
 	console.log(openCards.length);
 }
 
+//increase moveCount by one
+function increamentMoves() {
+	moveCount += 1;
+}
+
+//display moveCount
+function showMoves() {
+	movesEl.innerHTML = `${moveCount}`;
+}
+
+//check if game is over?
+function isGameOver(){
+	if(openCards.length == 16) return true;
+	return false;
+}
+
 //on successfully completion
-function gameOver() {
+function showScoreCard() {
 	setTimeout(function(){
 		alert("You did it");
 	},100);
