@@ -28,6 +28,10 @@ body {
     flex-direction: column;
 }
 
+.display-score-card {
+    opacity: .5;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
@@ -107,3 +111,50 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+/*
+ * Style for the score model.
+ */
+ .sc-model {
+    position: absolute;
+    top: 45%;
+    left: 39%;
+    background-color: deepskyblue;
+    text-align: center;
+    padding: 10px;
+    border: 5px solid aquamarine;
+    border-radius: 5px;
+ }
+ .sc-greets {
+    color: brown;
+    letter-spacing: 1px;
+ }
+ .sc-msg {
+    color: brown;
+    letter-spacing: 1px;
+ }
+ .sc-moves {
+    color: green;
+    font-weight: bolder;
+ }
+ .sc-time{
+    color:green;
+    font-weight: bolder;
+ }
+ .sc-restart {
+    padding: 10px;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+ }
+ .sc-exit {
+    padding: 10px;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+ }
+
+ .hidden {
+    display: none;
+ }
+ .show {
+    display: block;
+ }

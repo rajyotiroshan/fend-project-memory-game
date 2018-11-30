@@ -1,7 +1,8 @@
 /*
  * Create a list that holds all of your cards
  */
-let cardSymbols=[],openCards = [], movesEl,moveCount = 0;
+let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
+let gameStart = false;//flag for game start.
 let deck = document.querySelector(".deck");
 movesEl = document.querySelector(".moves");
 //access all symbols and push it to cardSymbols array.
@@ -56,6 +57,9 @@ function setsUpEventListener() {
 
 function deckClickListener(event) {
 	let clickedCard = event.target;
+	gameStart = true;
+	if(gameStart) {startCounter();gameStart = false;}
+	startCounter()
 	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I") {
 		//console.log(event.target);
 		//show card symbol.
@@ -102,7 +106,9 @@ function checkForMatch() {
 function matchedEffect() {
 	matchedStyle();//add matched style to card
 	if(isGameOver()){//game is over
-		showScoreCard();
+		stopCounter();
+		generateAndShowScoreCard();
+		//showScoreCard();
 	}
 }
 
@@ -129,7 +135,7 @@ function unmatchedStyle() {
 function removeUnmatchedCardFromOpenList(){
 	openCards.pop();
 	openCards.pop();
-	console.log(openCards.length);
+	//console.log(openCards.length);
 }
 
 //increase moveCount by one
@@ -151,8 +157,78 @@ function isGameOver(){
 //on successfully completion
 function showScoreCard() {
 	setTimeout(function(){
-		alert("You did it");
+		hideGameBoard();
+		//remove hidden class 
+		document.querySelector(".sc-model").classList.toggle("hidden");
 	},100);
+}
+
+//access moves, time-taken.
+function generateAndShowScoreCard() {
+	let scMoves = document.querySelector(".sc-moves");
+	let scTime = document.querySelector(".sc-time");
+	let scRestartBtn = document.querySelector(".sc-restart");
+	let scExitBtn= document.querySelector(".sc-exit");
+	scMoves.innerHTML = `${moveCount}`;
+	scTime = `${time}`;
+	showScoreCard();
+	scRestartBtn.addEventListener("click",restartGame);
+	scExitBtn.addEventListener("click",exitSCBoard);
+
+}
+
+//restart game from sc-board.
+function restartGame() {
+	exitSCBoard();
+	startCounter();
+}
+
+//exit game from
+function exitSCBoard() {
+	hideScoreCard()
+	showGameBoard();
+	resetGame();
+}
+
+//remove score-card board.
+function hideScoreCard() {
+	//toggle class hidden on sc-model elem.
+	document.querySelector(".sc-model").classList.toggle("hidden");
+	
+}
+
+//
+function showGameBoard() {
+	//toggle display-score-card class .
+	document.querySelector(".container").classList.toggle("display-score-card");
+}
+//reset move, time 
+function resetGame() {
+	//set moveCount to zero
+	moveCount = 0;
+	showMoves();
+	//start the counter.
+	startCounter();
+	//shuffle card
+	cardSymbols = shuffle(cardSymbols);
+	//display cards
+	displayCards();
+	//empty openCards array
+	openCards = [];
+}
+//start time
+
+function startCounter() {
+
+}
+//game is over
+function stopCounter(){
+	gameStart =false;
+}
+//hide game-board
+function hideGameBoard() {
+	//toggle display-score-card class.
+	document.querySelector(".container").classList.add("display-score-card");
 }
  /*
  	testing
@@ -160,8 +236,5 @@ function showScoreCard() {
 //for displaying.
  cardSymbols = shuffle(cardSymbols);
 displayCards();
-let arr = [1,2,3,4];
-console.log(arr);
-console.log(shuffle(arr));
 //for clck listener
 setsUpEventListener();
