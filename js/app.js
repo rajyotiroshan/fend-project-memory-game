@@ -2,7 +2,9 @@
  * Create a list that holds all of your cards
  */
 let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
-let gameStart = false;//flag for game start.
+let gameStart = true;//flag for game start.
+let counter = document.querySelector(".counter"); 
+let counterStopId;
 let deck = document.querySelector(".deck");
 movesEl = document.querySelector(".moves");
 
@@ -61,10 +63,11 @@ function setsUpEventListener() {
 
 function deckClickListener(event) {
 	let clickedCard = event.target;
-	gameStart = true;
-	if(gameStart) {startCounter();gameStart = false;}
-	startCounter()
 	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I") {
+		if(gameStart) {//at first click start counter.
+			startCounter();
+			gameStart = false;
+		}
 		//console.log(event.target);
 		//show card symbol.
 		revealCard(clickedCard);
@@ -110,7 +113,7 @@ function checkForMatch() {
 function matchedEffect() {
 	matchedStyle();//add matched style to card
 	if(isGameOver()){//game is over
-		stopCounter();
+		//stopCounter();
 		generateAndShowScoreCard();
 		//showScoreCard();
 	}
@@ -169,15 +172,18 @@ function showScoreCard() {
 
 //access moves, time-taken.
 function generateAndShowScoreCard() {
+	//stop counting time
+	stopCounter();
 	let scMoves = document.querySelector(".sc-moves");
 	let scTime = document.querySelector(".sc-time");
 	let scRestartBtn = document.querySelector(".sc-restart");
 	let scExitBtn= document.querySelector(".sc-exit");
 	scMoves.innerHTML = `${moveCount}`;
-	scTime = `${time}`;
+	scTime.innerHTML = `${time}`;
 	showScoreCard();
 	scRestartBtn.addEventListener("click",restartGame);
 	scExitBtn.addEventListener("click",exitSCBoard);
+	
 
 }
 
@@ -187,11 +193,11 @@ function restartGame() {
 	startCounter();
 }
 
-//exit game from
+//exit game from sc
 function exitSCBoard() {
 	hideScoreCard()
 	showGameBoard();
-	resetGame();
+	resetGame(null);
 }
 
 //remove score-card board.
@@ -207,27 +213,41 @@ function showGameBoard() {
 	document.querySelector(".container").classList.toggle("display-score-card");
 }
 //reset move, time 
-function resetGame() {
+function resetGame(event) {
 	//set moveCount to zero
 	moveCount = 0;
 	showMoves();
-	//start the counter.
-	startCounter();
+	//stop the counter.
+	if(event) {//called as listener for restart button click
+		stopCounter();
+	}
+	//start counter from zero.
+	time = 0;
+	counter.innerHTML = time ;
 	//shuffle card
 	cardSymbols = shuffle(cardSymbols);
 	//display cards
 	displayCards();
 	//empty openCards array
 	openCards = [];
+	gameStart  = true;
 }
 //start time
 
 function startCounter() {
+	counterStopId =  setInterval(function(){
+		//increase counter by one.
+		++time;
+		//show counter.
+		counter.innerHTML= `${time}`;
+
+	},1000);
 
 }
 //game is over
 function stopCounter(){
-	gameStart =false;
+	//stop setInterval for counter stop.
+	clearInterval(counterStopId);
 }
 //hide game-board
 function hideGameBoard() {

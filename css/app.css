@@ -107,6 +107,10 @@ h1 {
     display: inline-block;
 }
 
+.counter {
+
+}
+
 .score-panel .restart {
     float: right;
     cursor: pointer;
