@@ -5,10 +5,14 @@ let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
 let gameStart = false;//flag for game start.
 let deck = document.querySelector(".deck");
 movesEl = document.querySelector(".moves");
+
 //access all symbols and push it to cardSymbols array.
 document.querySelectorAll(".deck .card i").forEach(function(cardSymbol){
 	cardSymbols.push(cardSymbol.classList[1]);
 });
+
+//set click listener on restart button
+document.querySelector(".restart").addEventListener("click",resetGame);
 //console.log(cardSymbols);
 /*
  * Display the cards on the page
