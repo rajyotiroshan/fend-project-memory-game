@@ -1,6 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
+ let preCard = null, currCard = null;
 let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
 let gameStart = true;//flag for game start.
 let counter = document.querySelector(".counter"); 
@@ -62,8 +63,17 @@ function setsUpEventListener() {
 	deck.addEventListener("click" , deckClickListener);
 }
 
+/**
+* @desc click listener for deck
+*/
+
 function deckClickListener(event) {
 	let clickedCard = event.target;
+	preCard = currCard;
+	currCard = clickedCard;
+	if(currCard == preCard) return;
+
+
 	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I") {
 		if(gameStart) {//at first click start counter.
 			startCounter();
@@ -81,7 +91,6 @@ function deckClickListener(event) {
 		checkForMatch();
 	}
 }
-			
 
 //revela the symbol for clicked card.
 function revealCard(card){
