@@ -4,7 +4,8 @@
 let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
 let gameStart = true;//flag for game start.
 let counter = document.querySelector(".counter"); 
-let counterStopId;
+let counterStopId,stars, starCount=3;
+stars = document.querySelectorAll(".stars li");
 let deck = document.querySelector(".deck");
 movesEl = document.querySelector(".moves");
 
@@ -73,6 +74,8 @@ function deckClickListener(event) {
 		revealCard(clickedCard);
 		//add card to open card list
 		addToOpenCardList(clickedCard);
+		//set star
+		setStarRating();
 		//check for match with previous open card.
 		if(openCards.length %2 != 0) return;// will be matched with next card.
 		checkForMatch();
@@ -91,6 +94,55 @@ function addToOpenCardList(card) {
 
 }
 
+//find out the current star.
+function setStarRating() {
+	if(moveCount == 11) {
+		removeAStar(stars[2]);
+		starCount -= 1;;
+	}
+	else if(moveCount == 15) {
+		removeAStar(stars[1]);
+		starCount -= 1;
+	}
+	else if(moveCount == 18) {
+		removeAStar(stars[0]);
+		starCount -= 1;
+	}
+	/*if(moveCount > 18) {
+		//show no star 
+		//remove first one.
+		removeAStar(stars[0]);
+		//decrease star count
+		--starCount;
+	}
+	else if(moveCount > 14) {
+		//show one star
+		//remove 2nd last
+		removeAStar(stars[1]);
+		//decrease star count.
+		--starCount;
+	}
+	else if(moveCount > 10){
+		//show two star
+		//remove last one
+		removeAStar(stars[2]);
+		//decrease star count
+		--starCount;
+	}*/
+}
+
+//make star bg-color darkgray
+function removeAStar(star) {
+	star.style.color = "darkgray";
+}
+
+//reset star ratings
+function resetStarRatings() {
+	starCount = 3;
+	stars.forEach(function(star) {
+		star.style.color = "black";
+	})
+}
 //check if last two card matches in openCards list.
 
 function checkForMatch() {
@@ -174,10 +226,12 @@ function showScoreCard() {
 function generateAndShowScoreCard() {
 	//stop counting time
 	stopCounter();
+	let scStars = document.querySelector(".sc-stars");
 	let scMoves = document.querySelector(".sc-moves");
 	let scTime = document.querySelector(".sc-time");
 	let scRestartBtn = document.querySelector(".sc-restart");
 	let scExitBtn= document.querySelector(".sc-exit");
+	scStars.innerHTML = `Star Ratings ${starCount} ${starCount>=2?"stars":"star"}`;
 	scMoves.innerHTML = `${moveCount}`;
 	scTime.innerHTML = `${time}`;
 	showScoreCard();
@@ -188,12 +242,14 @@ function generateAndShowScoreCard() {
 }
 
 //restart game from sc-board.
+//immediately start counter.
 function restartGame() {
 	exitSCBoard();
 	startCounter();
 }
 
 //exit game from sc
+//on first clickon card start counter.
 function exitSCBoard() {
 	hideScoreCard()
 	showGameBoard();
@@ -217,6 +273,8 @@ function resetGame(event) {
 	//set moveCount to zero
 	moveCount = 0;
 	showMoves();
+	//reset star ratings to 3.
+	resetStarRatings();
 	//stop the counter.
 	if(event) {//called as listener for restart button click
 		stopCounter();
