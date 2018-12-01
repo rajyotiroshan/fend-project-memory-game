@@ -243,6 +243,7 @@ function generateAndShowScoreCard() {
 
 //restart game from sc-board.
 //immediately start counter.
+//click listener for sc-restart button
 function restartGame() {
 	exitSCBoard();
 	startCounter();
@@ -250,6 +251,7 @@ function restartGame() {
 
 //exit game from sc
 //on first clickon card start counter.
+//click listener for sc-exit button.
 function exitSCBoard() {
 	hideScoreCard()
 	showGameBoard();
