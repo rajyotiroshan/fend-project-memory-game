@@ -2,7 +2,8 @@
  * Create a list that holds all of your cards
  */
  let preCard = null, currCard = null;
-let cardSymbols=[],openCards = [], movesEl,moveCount = 0,time=0;
+let cardSymbols=[],openCards = [],openForMatch=[];
+let movesEl,moveCount = 0,time=0;
 let gameStart = true;//flag for game start.
 let counter = document.querySelector(".counter"); 
 let counterStopId,stars, starCount=3;
@@ -69,29 +70,38 @@ function setsUpEventListener() {
 
 function deckClickListener(event) {
 	let clickedCard = event.target;
-	preCard = currCard;
-	currCard = clickedCard;
-	if(currCard == preCard) return;
-
-
-	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I") {
-		if(gameStart) {//at first click start counter.
+	//console.log(clickedCard);
+	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I" ) {
+		if(clickedCard.nodeName == "I") {
+			clickedCard = clickedCard.parentNode;
+			//console.log(clickedCard);
+		}
+		if(gameStart) {//at first click, start counter.
 			startCounter();
 			gameStart = false;
 		}
 		//console.log(event.target);
+		if(openForMatch.length ==1) {//one card is already open for matching.
+			if(clickedCard == openForMatch[0]) {//same card is clicked again.
+				console.log("same card is clicked again");
+				return;
+			}
+		}
+		//add card to openForMatch list
+		addToOpenForMatchList(clickedCard);
 		//show card symbol.
 		revealCard(clickedCard);
-		//add card to open card list
-		addToOpenCardList(clickedCard);
 		//set star
 		setStarRating();
 		//check for match with previous open card.
-		if(openCards.length %2 != 0) return;// will be matched with next card.
+		if(openForMatch.length == 1) return;// will be matched with next card.
 		checkForMatch();
 	}
 }
-
+//add to openForMatch list
+function addToOpenForMatchList(card) {
+	openForMatch.push(card);
+}
 //revela the symbol for clicked card.
 function revealCard(card){
 	card.classList.add("show");
@@ -107,7 +117,7 @@ function addToOpenCardList(card) {
 function setStarRating() {
 	if(moveCount == 11) {
 		removeAStar(stars[2]);
-		starCount -= 1;;
+		starCount -= 1;
 	}
 	else if(moveCount == 15) {
 		removeAStar(stars[1]);
@@ -155,14 +165,18 @@ function resetStarRatings() {
 //check if last two card matches in openCards list.
 
 function checkForMatch() {
-	let firstCardSymbol = openCards[openCards.length-2].children[0].classList[1];
-	let secondCardSymbol = openCards[openCards.length-1].children[0].classList[1];
-	//console.log(firstCardSymbol);
-	//console.log(secondCardSymbol);
+	let currCardSymbol = openForMatch[1].children[0].classList[1];
+	let preCardSymbol = openForMatch[0].children[0].classList[1];
+	//console.log(currCardSymbol);
+	//console.log(preCardSymbol);
 	increamentMoves();
 	showMoves();
-	if(firstCardSymbol == secondCardSymbol) {//card matched
+	if(currCardSymbol == preCardSymbol) {//card matched
+		//add cards from openForMatch to openCards.And empty openForMatch
+		openCards.push(openForMatch.pop());
+		openCards.push(openForMatch.pop());
 		matchedEffect();
+		
 	}
 	else{
 		unmatchedEffect();
@@ -189,20 +203,21 @@ function matchedStyle() {
 function unmatchedEffect() {
 	setTimeout(function(){
 		unmatchedStyle();	
-		removeUnmatchedCardFromOpenList();
+		removeUnmatchedCardFromOpenForMatch();
 	},500);
 	
 }
 
 //unmatched style
 function unmatchedStyle() {
-	openCards[openCards.length-2].classList.remove("show");
-	openCards[openCards.length-1].classList.remove("show");
+	//hide cards
+	openForMatch[1].classList.remove("show");
+	openForMatch[0].classList.remove("show");
 }
 //poped out unmatched card.
-function removeUnmatchedCardFromOpenList(){
-	openCards.pop();
-	openCards.pop();
+function removeUnmatchedCardFromOpenForMatch(){
+	openForMatch.pop();
+	openForMatch.pop();
 	//console.log(openCards.length);
 }
 
