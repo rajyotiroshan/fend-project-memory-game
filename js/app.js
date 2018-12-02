@@ -97,8 +97,6 @@ function deckClickListener(event) {
 		addToOpenForMatchList(clickedCard);
 		//show card symbol.
 		revealCard(clickedCard);
-		//set star
-		setStarRating();
 		//check for match with previous open card.
 		if(openForMatch.length == 1) return;// will be matched with next card.
 		checkForMatch();
@@ -171,6 +169,8 @@ function checkForMatch() {
 	//console.log(preCardSymbol);
 	increamentMoves();
 	showMoves();
+	//set star
+	setStarRating();
 	if(currCardSymbol == preCardSymbol) {//card matched
 		matchedEffect();
 	}
