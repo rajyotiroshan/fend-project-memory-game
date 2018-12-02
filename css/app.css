@@ -38,6 +38,12 @@ h1 {
     font-weight: 300;
 }
 
+@media screen and (max-width: 400px) {
+    h1 {
+        font-size: 1.5em;
+    }
+}
+
 /*
  * Styles for the deck of cards
  */
@@ -101,10 +107,17 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 320px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
     margin-bottom: 10px;
 }
 
+@media screen and (min-width: 850px){
+    .score-panel {
+        width:650px;
+    }
+}
 .score-panel .stars {
     margin: 0;
     padding: 0;
