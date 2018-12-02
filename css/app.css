@@ -91,7 +91,7 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 320px;
     margin-bottom: 10px;
 }
 
@@ -108,7 +108,7 @@ h1 {
 }
 
 .counter {
-
+    margin: 0 0 0 20px;
 }
 
 .score-panel .restart {
