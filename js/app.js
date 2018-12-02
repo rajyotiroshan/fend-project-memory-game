@@ -33,6 +33,8 @@ function displayCards() {
             </li>`; 
 	});
 	deck.innerHTML = inner;
+	//add new property, matched to each li.card node. 
+	document.querySelectorAll("li.card").forEach((card)=>card.matched = false);
 }
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -80,6 +82,10 @@ function deckClickListener(event) {
 			startCounter();
 			gameStart = false;
 		}
+		if(clickedCard.matched) {
+			console.log("already matched card is clicked");
+			return;
+		}
 		//console.log(event.target);
 		if(openForMatch.length ==1) {//one card is already open for matching.
 			if(clickedCard == openForMatch[0]) {//same card is clicked again.
@@ -105,12 +111,6 @@ function addToOpenForMatchList(card) {
 //revela the symbol for clicked card.
 function revealCard(card){
 	card.classList.add("show");
-}
-
-//add to clicked List
-function addToOpenCardList(card) {
-	openCards.push(card);
-
 }
 
 //find out the current star.
@@ -172,11 +172,7 @@ function checkForMatch() {
 	increamentMoves();
 	showMoves();
 	if(currCardSymbol == preCardSymbol) {//card matched
-		//add cards from openForMatch to openCards.And empty openForMatch
-		openCards.push(openForMatch.pop());
-		openCards.push(openForMatch.pop());
 		matchedEffect();
-		
 	}
 	else{
 		unmatchedEffect();
@@ -186,6 +182,16 @@ function checkForMatch() {
 //add matching style.
 
 function matchedEffect() {
+	
+	//empty openForMatch list.
+	let card1 = openForMatch.pop();
+	let card2 = openForMatch.pop();
+	//set matched property to true.
+	card1.matched = true;
+	card2.matched = true;
+	//add cards to openCards.
+	openCards.push(card1);
+	openCards.push(card2);
 	matchedStyle();//add matched style to card
 	if(isGameOver()){//game is over
 		//stopCounter();
@@ -314,6 +320,7 @@ function resetGame(event) {
 	displayCards();
 	//empty openCards array
 	openCards = [];
+	openForMatch=[];
 	gameStart  = true;
 }
 //start time
