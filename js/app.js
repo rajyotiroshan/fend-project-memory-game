@@ -36,6 +36,7 @@ function displayCards() {
 	//add new property, matched to each li.card node. 
 	document.querySelectorAll("li.card").forEach((card)=>card.matched = false);
 }
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -102,10 +103,12 @@ function deckClickListener(event) {
 		checkForMatch();
 	}
 }
+
 //add to openForMatch list
 function addToOpenForMatchList(card) {
 	openForMatch.push(card);
 }
+
 //revela the symbol for clicked card.
 function revealCard(card){
 	card.classList.add("show");
