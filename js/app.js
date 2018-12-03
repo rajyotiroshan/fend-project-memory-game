@@ -125,39 +125,14 @@ function revealCard(card){
 
 //find out the current star.
 function setStarRating() {
-	if(moveCount == 11) {
+	if(moveCount == 11) {//show 2 stars.
 		removeAStar(stars[2]);
 		starCount -= 1;
 	}
-	else if(moveCount == 15) {
+	else if(moveCount == 15) {//show one star.
 		removeAStar(stars[1]);
 		starCount -= 1;
 	}
-	else if(moveCount == 18) {
-		removeAStar(stars[0]);
-		starCount -= 1;
-	}
-	/*if(moveCount > 18) {
-		//show no star 
-		//remove first one.
-		removeAStar(stars[0]);
-		//decrease star count
-		--starCount;
-	}
-	else if(moveCount > 14) {
-		//show one star
-		//remove 2nd last
-		removeAStar(stars[1]);
-		//decrease star count.
-		--starCount;
-	}
-	else if(moveCount > 10){
-		//show two star
-		//remove last one
-		removeAStar(stars[2]);
-		//decrease star count
-		--starCount;
-	}*/
 }
 
 //make star bg-color darkgray
