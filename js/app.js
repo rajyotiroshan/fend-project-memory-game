@@ -63,15 +63,24 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-function setsUpEventListener() {
+function setsUpEventListenerForDeck() {
 	deck.addEventListener("click" , deckClickListener);
 }
+
+/**
+* @desc remove click listener on deck
+*/
+
+function removeEventListenerForDeck() {
+	deck.removeEventListener("click", deckClickListener);
+} 
 
 /**
 * @desc click listener for deck
 */
 
 function deckClickListener(event) {
+	if(openForMatch.length == 2) return;//already two cards are revealed under check for match.
 	let clickedCard = event.target;
 	//console.log(clickedCard);
 	if(clickedCard.nodeName =="LI" || clickedCard.nodeName == "I" ) {
@@ -166,6 +175,9 @@ function resetStarRatings() {
 //check if last two card matches in openCards list.
 
 function checkForMatch() {
+	//remove click listener on deck.
+	//process first these two revealed card.
+	//removeEventListenerForDeck();
 	let currCardSymbol = openForMatch[1].children[0].classList[1];
 	let preCardSymbol = openForMatch[0].children[0].classList[1];
 	//console.log(currCardSymbol);
@@ -180,6 +192,8 @@ function checkForMatch() {
 	else{
 		unmatchedEffect();
 	}
+	//reset click listener for deck.
+	//setsUpEventListenerForDeck();
 }
 
 //add matching style.
@@ -355,4 +369,4 @@ function hideGameBoard() {
  cardSymbols = shuffle(cardSymbols);
 displayCards();
 //for clck listener
-setsUpEventListener();
+setsUpEventListenerForDeck();
